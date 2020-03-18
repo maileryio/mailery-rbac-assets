@@ -1,3 +1,4 @@
+import fs from 'fs';
 import commonjs from 'rollup-plugin-commonjs';
 import vue from 'rollup-plugin-vue';
 import buble from 'rollup-plugin-buble';
@@ -5,6 +6,7 @@ import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import { eslint } from 'rollup-plugin-eslint';
 import sassPostcss from 'rollup-plugin-sass-postcss';
+import css from 'rollup-plugin-css-only';
 import autoprefixer from 'autoprefixer';
 
 const env = process.env.NODE_ENV || 'development';
@@ -40,6 +42,12 @@ export default (async () => ({
       plugins: [
         autoprefixer()
       ]
+    }),
+    css({
+      output: function (styles, styleNodes) {
+        const contents = fs.readFileSync('dist/main.min.css', 'utf8');
+        fs.writeFileSync('dist/main.min.css', contents + styles)
+      }
     }),
     vue({
       css: true,
