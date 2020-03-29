@@ -60,24 +60,18 @@
       postUnassignUrl: 'String'
     },
     components: { LiquorTree },
-    data: () => ({
-      items: [
-        {text: 'Item 1'},
-        {text: 'Item 2'},
-        {text: 'Item 3', state: { expanded: true }, children: [
-          {text: 'Item 3.1'},
-          {text: 'Item 3.2'}
-        ]}
-      ],
-      options: {
-        checkbox: true,
-        checkOnSelect: true
-      },
-      treeFilterUnassigned: '',
-      treeFilterAssigned: '',
-      unassignedChecked: 0,
-      assignedChecked: 0,
-    }),
+    data: function () {
+      return {
+        options: {
+          checkbox: true,
+          checkOnSelect: true
+        },
+        treeFilterUnassigned: '',
+        treeFilterAssigned: '',
+        unassignedChecked: 0,
+        assignedChecked: 0
+      };
+    },
     methods: {
       buttonCssClasses(counter) {
         return {
@@ -94,13 +88,48 @@
         node.states.checked ? this.assignedChecked++ : this.assignedChecked--;
       },
       handleAssignClick() {
-        console.log(this);
+        postData(this.postAssignUrl, getSelectedData(this.$refs.unassignedTree))
+          .then(response => response.json())
+          .then(response => {
+            window.location.reload();
+          });
       },
       handleUnassignClick() {
-        console.log('handleUnassignClick');
+        postData(this.postUnassignUrl, getSelectedData(this.$refs.assignedTree))
+          .then(response => response.json())
+          .then(response => {
+            window.location.reload();
+          });
       }
     }
-  }
+  };
+
+  const getSelectedData = (tree) => {
+    return tree
+      .findAll({ state: { checked: true } })
+      .filter(item => !!item.data.type)
+      .map(item => {
+        return {
+          id: item.data.id,
+          type: item.data.type
+        }
+      });
+  };
+
+  const postData = (url = '', data = {}) => {
+    return fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(data)
+    });
+  };
 </script>
 
 <style scoped>
