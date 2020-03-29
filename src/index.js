@@ -1,9 +1,11 @@
-import component from './components/DualTreeview.vue';
+import DualTreeview from './components/DualTreeview.vue';
+import Typeahead from './components/Typeahead.vue';
 import './styles/index.scss';
 
 const plugin = {
   install,
-  component
+  DualTreeview,
+  Typeahead
 };
 
 (function (plugin) {
@@ -13,7 +15,8 @@ const plugin = {
 })(plugin);
 
 export function install(Vue, options) {
-  Vue.component(component.name, component);
+  Vue.component(DualTreeview.name, DualTreeview);
+  Vue.component(Typeahead.name, Typeahead);
 }
 
 export default plugin;

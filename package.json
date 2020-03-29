@@ -25,12 +25,15 @@
   },
   "dependencies": {
     "babel-eslint": "^10.1.0",
+    "debounce": "^1.2.0",
     "eslint-config-dev": "^2.0.0",
-    "liquor-tree": "^0.2.70"
+    "liquor-tree": "^0.2.70",
+    "vue-typeahead": "^2.3.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-unit-mocha": "^4.2.2",
     "@vue/cli-service": "^4.2.2",
+    "@vue/eslint-config-standard": "^5.1.2",
     "@vue/test-utils": "^1.0.0-beta.31",
     "autoprefixer": "^9.7.4",
     "chai": "^4.2.0",
@@ -38,6 +41,7 @@
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
+    "eslint-config-vue": "^2.0.2",
     "eslint-plugin-chai-friendly": "^0.5.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
