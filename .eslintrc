@@ -10,8 +10,7 @@
   "extends": [
     "standard",
     "eslint:recommended",
-    "plugin:vue/recommended",
-    "@vue/standard"
+    "plugin:vue/recommended"
   ],
   "rules": {
     "key-spacing"          : 0,
