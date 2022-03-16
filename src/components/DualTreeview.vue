@@ -54,6 +54,8 @@
   export default {
     name: 'ui-dual-treeview',
     props: {
+      csrfName: 'String',
+      csrfValue: 'String',
       fetchUnassignedUrl: 'String',
       fetchAssignedUrl: 'String',
       postAssignUrl: 'String',
@@ -88,14 +90,26 @@
         node.states.checked ? this.assignedChecked++ : this.assignedChecked--;
       },
       handleAssignClick() {
-        postData(this.postAssignUrl, getSelectedData(this.$refs.unassignedTree))
+        postData(
+          this.postAssignUrl,
+          {
+            ...getSelectedData(this.$refs.unassignedTree),
+            [this.csrfName]: this.csrfValue
+          }
+        )
           .then(response => response.json())
           .then(response => {
             window.location.reload();
           });
       },
       handleUnassignClick() {
-        postData(this.postUnassignUrl, getSelectedData(this.$refs.assignedTree))
+        postData(
+          this.postUnassignUrl,
+          {
+            ...getSelectedData(this.$refs.assignedTree),
+            [this.csrfName]: this.csrfValue
+          }
+        )
           .then(response => response.json())
           .then(response => {
             window.location.reload();
@@ -116,18 +130,13 @@
       });
   };
 
-  const postData = (url = '', data = {}) => {
-    return fetch(url, {
+  const postData = (url = '', body = {}) => {
+    return window.fetch(url, {
       method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8'
       },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data)
+      body: JSON.stringify(body)
     });
   };
 </script>
