@@ -54,8 +54,8 @@
   export default {
     name: 'ui-dual-treeview',
     props: {
-      csrfName: 'String',
       csrfValue: 'String',
+      csrfHeaderName: 'String',
       fetchUnassignedUrl: 'String',
       fetchAssignedUrl: 'String',
       postAssignUrl: 'String',
@@ -92,9 +92,9 @@
       handleAssignClick() {
         postData(
           this.postAssignUrl,
+          getSelectedData(this.$refs.unassignedTree),
           {
-            ...getSelectedData(this.$refs.unassignedTree),
-            [this.csrfName]: this.csrfValue
+            [this.csrfHeaderName]: this.csrfValue
           }
         )
           .then(response => response.json())
@@ -105,9 +105,9 @@
       handleUnassignClick() {
         postData(
           this.postUnassignUrl,
+          getSelectedData(this.$refs.assignedTree),
           {
-            ...getSelectedData(this.$refs.assignedTree),
-            [this.csrfName]: this.csrfValue
+            [this.csrfHeaderName]: this.csrfValue
           }
         )
           .then(response => response.json())
@@ -130,11 +130,12 @@
       });
   };
 
-  const postData = (url = '', body = {}) => {
+  const postData = (url = '', body = {}, headers = {}) => {
     return window.fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        ...headers
       },
       body: JSON.stringify(body)
     });
